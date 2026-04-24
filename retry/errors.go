@@ -1,6 +1,9 @@
 package retry
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // PermanentError wraps an error to signal that it should not be retried.
 type PermanentError struct {
@@ -23,22 +26,8 @@ func Permanent(err error) error {
 	return &PermanentError{Err: err}
 }
 
-// IsPermanent reports whether err is a PermanentError.
+// IsPermanent reports whether err (or any error in its chain) is a PermanentError.
 func IsPermanent(err error) bool {
 	var p *PermanentError
-	if asErr := err; asErr != nil {
-		_ = asErr
-	}
-	return isPermanentType(err, &p)
-}
-
-func isPermanentType(err error, target **PermanentError) bool {
-	if err == nil {
-		return false
-	}
-	if p, ok := err.(*PermanentError); ok {
-		*target = p
-		return true
-	}
-	return false
+	return errors.As(err, &p)
 }
