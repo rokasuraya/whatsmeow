@@ -24,9 +24,10 @@ type RateLimiterConfig struct {
 }
 
 // DefaultRateLimiterConfig is the default configuration for a RateLimiter.
+// Lowered defaults to be more conservative and avoid hitting WhatsApp rate limits.
 var DefaultRateLimiterConfig = RateLimiterConfig{
-	Rate:  10,
-	Burst: 20,
+	Rate:  5,
+	Burst: 10,
 }
 
 // NewRateLimiter creates a new RateLimiter with the given configuration.
