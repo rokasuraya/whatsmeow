@@ -17,4 +17,7 @@
 //		}
 //		return err
 //	})
+//
+// Note: attempt is 0-indexed, so the first call has attempt == 0.
+// Use (attempt + 1) if you want a 1-indexed count in log messages.
 package retry
