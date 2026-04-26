@@ -20,10 +20,12 @@ type HedgedRetryConfig struct {
 }
 
 // DefaultHedgedRetryConfig returns a HedgedRetryConfig with sensible defaults.
+// Note: increased HedgeDelay to 200ms to reduce unnecessary duplicate requests
+// on connections that are just slightly slow rather than actually failing.
 func DefaultHedgedRetryConfig() HedgedRetryConfig {
 	return HedgedRetryConfig{
 		MaxHedges:  2,
-		HedgeDelay: 100 * time.Millisecond,
+		HedgeDelay: 200 * time.Millisecond,
 		IsRetryable: func(err error) bool {
 			return err != nil && !IsPermanent(err)
 		},
