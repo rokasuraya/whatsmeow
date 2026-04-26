@@ -20,4 +20,7 @@
 //
 // Note: attempt is 0-indexed, so the first call has attempt == 0.
 // Use (attempt + 1) if you want a 1-indexed count in log messages.
+//
+// Note: errors wrapped with retry.Permanent are unwrapped before being
+// returned, so callers can use errors.Is/As on the original error directly.
 package retry
