@@ -22,11 +22,12 @@ type ExponentialBackoff struct {
 }
 
 // DefaultExponentialBackoff returns an ExponentialBackoff with sensible defaults.
+// Increased MaxInterval to 60s and Jitter to 0.2 for more spread-out retries.
 func DefaultExponentialBackoff() *ExponentialBackoff {
 	return &ExponentialBackoff{
 		Multiplier:  2.0,
-		MaxInterval: 30 * time.Second,
-		Jitter:      0.1,
+		MaxInterval: 60 * time.Second,
+		Jitter:      0.2,
 	}
 }
 
