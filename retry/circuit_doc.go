@@ -26,4 +26,7 @@
 // The circuit breaker state is shared across all calls made through the same
 // CircuitRetrier instance, making it suitable for wrapping a single downstream
 // dependency.
+//
+// Note: For my personal use, I typically pair this with a context that has a
+// deadline so long retry loops don't block indefinitely on slow dependencies.
 package retry
