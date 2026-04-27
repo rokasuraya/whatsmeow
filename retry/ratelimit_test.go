@@ -20,6 +20,7 @@ func TestRateLimiter_AllowConsumesToken(t *testing.T) {
 }
 
 func TestRateLimiter_RefillsOverTime(t *testing.T) {
+	// Rate: 100 tokens/sec means one token every 10ms; sleep 20ms to ensure refill
 	rl := NewRateLimiter(RateLimiterConfig{Rate: 100, Burst: 1})
 	if !rl.Allow() {
 		t.Fatal("expected first Allow() to succeed")
@@ -45,11 +46,12 @@ func TestRateLimiter_WaitSucceeds(t *testing.T) {
 }
 
 func TestRateLimiter_WaitCancelledContext(t *testing.T) {
+	// Use a very low rate (0.01 tokens/sec) so the limiter won't refill before ctx is cancelled
 	rl := NewRateLimiter(RateLimiterConfig{Rate: 0.01, Burst: 1})
 	// drain the token so Wait must block
 	rl.Allow()
 	ctx, cancel := context.WithCancel(context.Background())
-	cancel()
+	cancel() // cancel immediately
 	if err := rl.Wait(ctx); err == nil {
 		t.Fatal("expected Wait to return error for cancelled context")
 	}
