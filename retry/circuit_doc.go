@@ -27,6 +27,15 @@
 // CircuitRetrier instance, making it suitable for wrapping a single downstream
 // dependency.
 //
+// # Error Handling
+//
+// When the circuit is open, Do returns ErrCircuitOpen immediately without
+// invoking the provided function. Callers should check for this error
+// explicitly if they need to distinguish between a tripped circuit and a
+// genuine failure from the downstream service.
+//
 // Note: For my personal use, I typically pair this with a context that has a
 // deadline so long retry loops don't block indefinitely on slow dependencies.
+// I also tend to log ErrCircuitOpen at warn level rather than error level
+// since it's an expected protective response, not an unexpected failure.
 package retry
